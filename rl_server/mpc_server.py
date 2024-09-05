@@ -274,12 +274,12 @@ def make_request_handler(input_dict):
     return Request_Handler
 
 
-def run(server_class=HTTPServer, port=8333, log_file_path=LOG_FILE):
+def run(server_class=HTTPServer, port=8333, log_file_path=LOG_FILE, server_addr="0.0.0.0"):
 
     np.random.seed(RANDOM_SEED)
 
-    if not os.path.exists(SUMMARY_DIR):
-        os.makedirs(SUMMARY_DIR)
+    # if not os.path.exists(SUMMARY_DIR):
+    #     os.makedirs(SUMMARY_DIR)
 
     # make chunk combination options
     for combo in itertools.product([0,1,2,3,4,5], repeat=5):
@@ -305,16 +305,18 @@ def run(server_class=HTTPServer, port=8333, log_file_path=LOG_FILE):
         # interface to abr_rl server
         handler_class = make_request_handler(input_dict=input_dict)
 
-        server_address = ('localhost', port)
+        # server_address = ('localhost', port)
+        server_address = (server_addr, port)
         httpd = server_class(server_address, handler_class)
-        print 'Listening on port ' + str(port)
+        print 'IP = ' + server_addr + ', listening on port ' + str(port)
         httpd.serve_forever()
 
 
 def main():
-    if len(sys.argv) == 2:
-        trace_file = sys.argv[1]
-        run(log_file_path=LOG_FILE + '_fastMPC_' + trace_file)
+    if len(sys.argv) == 3:
+        server_addr = sys.argv[1]
+        log_file_path = sys.argv[2]
+        run(log_file_path=log_file_path, server_addr=server_addr)
     else:
         run()
 

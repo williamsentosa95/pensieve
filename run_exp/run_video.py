@@ -68,7 +68,7 @@ try:
 	
 	# initialize chrome driver
 	options=Options()
-	chrome_driver = '../abr_browser_dir/chromedriver'
+	chrome_driver = '../abr_browser_dir/chromedriver-124'
 	options.add_argument('--user-data-dir=' + chrome_user_dir)
 	options.add_argument('--ignore-certificate-errors')
 	driver=webdriver.Chrome(chrome_driver, chrome_options=options)

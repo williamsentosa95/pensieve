@@ -9,7 +9,7 @@ import json
 os.environ['CUDA_VISIBLE_DEVICES']=''
 
 import numpy as np
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 import time
 import a3c
 
@@ -208,14 +208,14 @@ def make_request_handler(input_dict):
     return Request_Handler
 
 
-def run(server_class=HTTPServer, port=8333, log_file_path=LOG_FILE):
+def run(server_class=HTTPServer, port=8333, log_file_path=LOG_FILE, server_addr="0.0.0.0"):
 
     np.random.seed(RANDOM_SEED)
 
     assert len(VIDEO_BIT_RATE) == A_DIM
 
-    if not os.path.exists(SUMMARY_DIR):
-        os.makedirs(SUMMARY_DIR)
+    # if not os.path.exists(SUMMARY_DIR):
+    #     os.makedirs(SUMMARY_DIR)
 
     with tf.Session() as sess, open(log_file_path, 'wb') as log_file:
 
@@ -262,16 +262,18 @@ def run(server_class=HTTPServer, port=8333, log_file_path=LOG_FILE):
         # interface to abr_rl server
         handler_class = make_request_handler(input_dict=input_dict)
 
-        server_address = ('localhost', port)
+        # server_address = ('localhost', port)
+        server_address = (server_addr, port)
         httpd = server_class(server_address, handler_class)
-        print 'Listening on port ' + str(port)
+        print 'IP = ' + server_addr + ', listening on port ' + str(port)
         httpd.serve_forever()
 
 
 def main():
-    if len(sys.argv) == 2:
-        trace_file = sys.argv[1]
-        run(log_file_path=LOG_FILE + '_RL_' + trace_file)
+    if len(sys.argv) == 3:
+        server_addr = sys.argv[1]
+        log_file_path = sys.argv[2]
+        run(log_file_path=log_file_path, server_addr=server_addr)
     else:
         run()
 

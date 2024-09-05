@@ -21,8 +21,8 @@ DEFAULT_QUALITY = 0  # default video quality without agent
 REBUF_PENALTY = 4.3  # 1 sec rebuffering -> this number of Mbps
 SMOOTH_PENALTY = 1
 TOTAL_VIDEO_CHUNKS = 48
-SUMMARY_DIR = './results'
-LOG_FILE = './results/log'
+SUMMARY_DIR = './results/exp_results'
+LOG_FILE = './results/exp_results/log'
 # in format of time_stamp bit_rate buffer_size rebuffer_time video_chunk_size download_time reward
 
 
@@ -95,11 +95,9 @@ def make_request_handler(input_dict):
     return Request_Handler
 
 
-def run(server_class=HTTPServer, port=8333, log_file_path=LOG_FILE):
-
-    if not os.path.exists(SUMMARY_DIR):
-        os.makedirs(SUMMARY_DIR)
-
+def run(server_class=HTTPServer, port=8333, log_file_path=LOG_FILE, server_addr='0.0.0.0'):
+    # if not os.path.exists(SUMMARY_DIR):
+    #     os.makedirs(SUMMARY_DIR)
     with open(log_file_path, 'wb') as log_file:
 
         last_bit_rate = DEFAULT_QUALITY
@@ -110,17 +108,18 @@ def run(server_class=HTTPServer, port=8333, log_file_path=LOG_FILE):
 
         handler_class = make_request_handler(input_dict=input_dict)
 
-        server_address = ('localhost', port)
+        #server_address = ('localhost', port)
+        server_address = (server_addr, port)
         httpd = server_class(server_address, handler_class)
-        print 'Listening on port ' + str(port)
+        print 'IP = ' + server_addr + ', listening on port ' + str(port)
         httpd.serve_forever()
 
 
 def main():
     if len(sys.argv) == 3:
-        abr_algo = sys.argv[1]
-        trace_file = sys.argv[2]
-        run(log_file_path=LOG_FILE + '_' + abr_algo + '_' + trace_file)
+        server_addr = sys.argv[1]
+        log_file_path = sys.argv[2]
+        run(log_file_path=log_file_path, server_addr=server_addr)
     else:
         run()
 
