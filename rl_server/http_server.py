@@ -4,10 +4,11 @@ import sys
 import os
 
 PORT = 8000
+PENSIEVE_PATH = "/home/william/android-measurement/pensieve/"
 
 def run(port=PORT, server_addr='0.0.0.0'):
     # Set the directory you want to serve
-    root_directory = "../video_server/"
+    root_directory = PENSIEVE_PATH + "/video_server/"
     os.chdir(root_directory)
     Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
     httpd = SocketServer.TCPServer((server_addr, port), Handler)

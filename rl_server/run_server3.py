@@ -4,7 +4,7 @@ import numpy as np
 import sys
 
 PYTHON = "python"
-
+PENSIEVE_PATH = "/home/william/android-measurement/pensieve/"
 
 def main(args):
     alg = args[0]
@@ -22,12 +22,12 @@ def main(args):
         server_script = "simple_server.py"
     
     # Run http server
-    cmd = [PYTHON, "http_server.py", server_ip]
+    cmd = [PYTHON, PENSIEVE_PATH + "http_server.py", server_ip]
     http_proc = subprocess.Popen(cmd)
 
     # Run video server
     print("Server script = " + server_script)
-    cmd = [PYTHON, server_script, server_ip, trace_file]
+    cmd = [PYTHON, PENSIEVE_PATH + server_script, server_ip, trace_file]
     video_proc = subprocess.Popen(cmd)
 
     try:
