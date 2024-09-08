@@ -10,10 +10,10 @@ import sys
 
 def main(args):
     alg = args[0]
-    url = "http://100.64.0.2/myindex_"
+    url = "http://100.64.0.1:8000/myindex_"
     if alg == "BB":
         url = url + "BB.html"
-    if alg == "RB":
+    elif alg == "RB":
         url = url + "RB.html"
     elif alg == "BOLA":
         url = url + "BOLA.html"
