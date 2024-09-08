@@ -10,6 +10,7 @@ import sys
 
 def main(args):
     alg = args[0]
+    duration = int(args[1])
     url = "http://100.64.0.1:8000/myindex_"
     if alg == "BB":
         url = url + "BB.html"
@@ -38,11 +39,13 @@ def main(args):
     options.add_argument('--no-sandbox')
     options.add_argument("--incognito")
     options.add_argument('--disable-dev-shm-usage')
+    options.add_argument("--headless")
     driver=webdriver.Chrome(options=options)
 
     try:
+        sleep(5)
         driver.get(url)
-        sleep(60)
+        sleep(duration)
     except Exception as e:
         print(f"An error occurred: {e}")
     finally:
@@ -52,9 +55,9 @@ if __name__ == '__main__':
     prog = sys.argv[0]
     args = sys.argv[1:]
     num_args = len(args)
-    if (num_args < 1) :
+    if (num_args < 2) :
         sys.stderr.write((u"Usage: %s" +
-                          u" <algorithm>\n") %
+                          u" <algorithm> <duration-second>\n") %
                          (prog))
         sys.exit(1)
 
