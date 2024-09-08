@@ -22,12 +22,14 @@ def main(args):
         server_script = "simple_server.py"
     
     # Run http server
-    cmd = [PYTHON, PENSIEVE_PATH + "http_server.py", server_ip]
+    script_path = PENSIEVE_PATH + "/rl_server/" + "http_server.py"
+    cmd = [PYTHON, script_path, server_ip]
     http_proc = subprocess.Popen(cmd)
 
     # Run video server
     print("Server script = " + server_script)
-    cmd = [PYTHON, PENSIEVE_PATH + server_script, server_ip, trace_file]
+    script_path = PENSIEVE_PATH + "/rl_server/" + server_script
+    cmd = [PYTHON, script_path, server_ip, trace_file]
     video_proc = subprocess.Popen(cmd)
 
     try:
